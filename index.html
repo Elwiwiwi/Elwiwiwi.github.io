@@ -344,7 +344,7 @@ Sign in to view portfolio
 
 <div id="login-error"></div>
 
-<button type="button" class="btn-login" onclick="attemptLogin()">
+<button class="btn-login" onclick="attemptLogin()">
 Sign In →
 </button>
 
@@ -533,8 +533,6 @@ document.getElementById("login-error");
 
 if(user === VALID_USER && pass === VALID_PASS){
 
-localStorage.setItem("loggedIn","true");
-
 document.getElementById("login-page")
 .classList.add("hidden");
 
@@ -557,15 +555,13 @@ error.textContent =
 
 function logout(){
 
-localStorage.removeItem("loggedIn");
-
 document.getElementById("main-page")
 .classList.add("hidden");
 
 document.getElementById("login-page")
 .classList.remove("hidden");
 
-
+// Clear the input fields so they are empty when signing out
 document.getElementById("login-user").value = "";
 document.getElementById("login-pass").value = "";
 document.getElementById("login-error").textContent = "";
@@ -582,7 +578,6 @@ document.getElementById(id)
 .addEventListener("keydown",e=>{
 
 if(e.key==="Enter"){
-e.preventDefault(); 
 attemptLogin();
 }
 
@@ -649,26 +644,6 @@ window.addEventListener("scroll",check);
 check();
 
 }
-
-
-
-
-document.addEventListener("DOMContentLoaded", ()=>{
-
-if(localStorage.getItem("loggedIn")==="true"){
-
-document.getElementById("login-page")
-.classList.add("hidden");
-
-document.getElementById("main-page")
-.classList.remove("hidden");
-
-startClock();
-triggerReveals();
-
-}
-
-});
 
 </script>
 
