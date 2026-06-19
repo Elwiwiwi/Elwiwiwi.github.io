@@ -28,18 +28,119 @@ background:radial-gradient(circle at top left,var(--accent2),transparent 40%),
 radial-gradient(circle at bottom right,var(--accent),transparent 35%);
 opacity:.4;z-index:-1;
 }
+
+/* ── LOGIN PAGE ── */
+#login-page{
+position:fixed;inset:0;z-index:9999;
+display:flex;align-items:center;justify-content:center;
+background:#0f0c18;
+transition:opacity .6s, visibility .6s;
+}
+#login-page.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#login-page::before{
+content:"";position:absolute;inset:0;
+background:radial-gradient(circle at 20% 30%,#2c2144,transparent 45%),
+radial-gradient(circle at 80% 70%,#9b6dff33,transparent 45%);
+}
+.login-box{
+position:relative;z-index:1;
+background:rgba(28,22,42,.85);
+backdrop-filter:blur(24px);
+border:1px solid rgba(155,109,255,.25);
+border-radius:32px;
+padding:50px 44px;
+width:min(420px,92vw);
+text-align:center;
+box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04);
+}
+.login-logo{
+font-size:1.5rem;font-weight:700;
+color:#f4f0ff;margin-bottom:6px;letter-spacing:-.5px;
+}
+.login-sub{color:#9b8fc0;font-size:.85rem;margin-bottom:36px}
+.login-field{
+position:relative;margin-bottom:18px;text-align:left;
+}
+.login-field label{
+display:block;font-size:.75rem;font-weight:600;
+color:#9b8fc0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;
+}
+.login-field input{
+width:100%;padding:14px 18px;
+background:rgba(155,109,255,.08);
+border:1px solid rgba(155,109,255,.2);
+border-radius:14px;
+color:#f4f0ff;font-size:.95rem;font-family:Poppins,sans-serif;
+outline:none;transition:.25s;
+}
+.login-field input:focus{
+border-color:#9b6dff;
+background:rgba(155,109,255,.15);
+box-shadow:0 0 0 3px rgba(155,109,255,.15);
+}
+.login-field input::placeholder{color:#5a4f72}
+#login-error{
+color:#ff7eb3;font-size:.82rem;
+margin-bottom:14px;min-height:18px;
+}
+.btn-login{
+width:100%;padding:15px;
+background:linear-gradient(135deg,#9b6dff,#d6c3ff);
+border:none;border-radius:14px;
+color:white;font-weight:700;font-size:1rem;
+font-family:Poppins,sans-serif;cursor:pointer;
+box-shadow:0 8px 30px rgba(155,109,255,.4);
+transition:.25s;margin-top:4px;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(155,109,255,.5)}
+.btn-login:active{transform:translateY(0)}
+.login-hint{
+margin-top:22px;color:#5a4f72;font-size:.78rem;
+}
+.login-hint span{color:#9b6dff}
+
+/* ── MAIN PORTFOLIO ── */
+#main-page{transition:opacity .6s}
+#main-page.hidden{opacity:0;pointer-events:none}
+
 header{
 position:fixed;top:0;width:100%;padding:18px 8%;
 display:flex;justify-content:space-between;align-items:center;
 backdrop-filter:blur(12px);z-index:999;
 }
+.header-right{display:flex;align-items:center;gap:18px}
+
+/* live clock */
+#live-clock{
+font-size:.82rem;font-weight:600;
+color:var(--accent);
+background:rgba(155,109,255,.1);
+border:1px solid rgba(155,109,255,.2);
+padding:8px 16px;border-radius:999px;
+letter-spacing:.04em;white-space:nowrap;
+transition:.4s;
+}
+
 .logo{font-weight:700;font-size:1.2rem}
 .btn{
 background:linear-gradient(135deg,var(--accent),#d6c3ff);
 border:none;padding:12px 22px;border-radius:999px;
 cursor:pointer;color:white;font-weight:600;
 box-shadow:0 8px 25px rgba(155,109,255,.35);
+transition:.25s;
 }
+.btn:hover{transform:translateY(-2px)}
+
+/* logout button */
+.btn-logout{
+background:rgba(155,109,255,.12);
+border:1px solid rgba(155,109,255,.25);
+padding:10px 18px;border-radius:999px;
+cursor:pointer;color:var(--accent);font-weight:600;font-size:.85rem;
+font-family:Poppins,sans-serif;transition:.25s;
+}
+.btn-logout:hover{background:rgba(155,109,255,.22)}
+
 .hero{
 min-height:100vh;display:flex;align-items:center;justify-content:center;
 padding:100px 8%;gap:60px;flex-wrap:wrap;
@@ -49,9 +150,7 @@ width:320px;border-radius:30px;
 box-shadow:0 20px 40px rgba(0,0,0,.2);
 animation:float 4s ease-in-out infinite;
 }
-@keyframes float{
-50%{transform:translateY(-12px)}
-}
+@keyframes float{50%{transform:translateY(-12px)}}
 .glass{
 background:var(--card);
 backdrop-filter:blur(18px);
@@ -82,77 +181,163 @@ footer{text-align:center;padding:30px}
 </head>
 <body>
 
+<!-- ── LOGIN PAGE ── -->
+<div id="login-page">
+  <div class="login-box">
+    <div class="login-logo">Hailie Sophie</div>
+    <p class="login-sub">Sign in to view the portfolio</p>
+
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+    </div>
+    <div id="login-error"></div>
+    <button class="btn-login" onclick="attemptLogin()">Sign In →</button>
+    <p class="login-hint">Demo credentials — user: <span>hailie</span> &nbsp;|&nbsp; pass: <span>sophie2025</span></p>
+  </div>
+</div>
+
+<!-- ── MAIN PORTFOLIO ── -->
+<div id="main-page" class="hidden">
+
 <header>
-<div class="logo">Hailie Sophie</div>
-<button class="btn" onclick="document.body.classList.toggle('dark')">🌙 Dark Mode</button>
+  <div class="logo">Hailie Sophie</div>
+  <div class="header-right">
+    <div id="live-clock">—</div>
+    <button class="btn" onclick="document.body.classList.toggle('dark')">🌙 Dark Mode</button>
+    <button class="btn-logout" onclick="logout()">Sign out</button>
+  </div>
 </header>
 
 <section class="hero">
-<img src="profile.jpeg" class="pfp">
-<div class="glass" style="max-width:700px">
-<h1>Hailie Sophie R. Delos Santos</h1>
-<h3>IT Student • Freelance artist • Multimedia Artist</h3>
-<p>Blending creativity, multimedia arts, and Information Technology to create engaging digital experiences.</p>
-<button class="btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">✨ Welcome</button>
-</div>
+  <img src="profile.jpeg" class="pfp">
+  <div class="glass" style="max-width:700px">
+    <h1>Hailie Sophie R. Delos Santos</h1>
+    <h3>IT Student • Freelance artist • Multimedia Artist</h3>
+    <p>Blending creativity, multimedia arts, and Information Technology to create engaging digital experiences.</p>
+    <button class="btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">✨ Welcome</button>
+  </div>
 </section>
 
 <section id="about" class="reveal">
-<div class="glass">
-<h2>About Me</h2>
-<p>Hi, I’m Hailie Sophie! As a Freelance Media Artist with a formal background in Information Technology, I blend artistic expression with technical expertise to create compelling digital experiences. My work spans digital illustration, visual communication, multimedia production, and creative problem solving, while my IT background helps me build user-focused and technically sound solutions.</p>
-</div>
+  <div class="glass">
+    <h2>About Me</h2>
+    <p>Hi, I'm Hailie Sophie! As a Freelance Media Artist with a formal background in Information Technology, I blend artistic expression with technical expertise to create compelling digital experiences. My work spans digital illustration, visual communication, multimedia production, and creative problem solving, while my IT background helps me build user-focused and technically sound solutions.</p>
+  </div>
 </section>
 
 <section class="reveal">
-<h2>IT & Multimedia Skills</h2>
-<div class="grid">
-<div class="skill">HTML & CSS</div>
-<div class="skill">JavaScript</div>
-<div class="skill">UI/UX Design</div>
-<div class="skill">Digital Illustration</div>
-<div class="skill">Graphic Design</div>
-<div class="skill">Photo Editing</div>
-<div class="skill">Video Editing</div>
-<div class="skill">Content Creation</div>
-<div class="skill">Computer Troubleshooting</div>
-<div class="skill">Web Design</div>
-<div class="skill">Creative Problem Solving</div>
-<div class="skill">Multimedia Production</div>
-</div>
+  <h2>IT & Multimedia Skills</h2>
+  <div class="grid">
+    <div class="skill">HTML & CSS</div>
+    <div class="skill">JavaScript</div>
+    <div class="skill">UI/UX Design</div>
+    <div class="skill">Digital Illustration</div>
+    <div class="skill">Graphic Design</div>
+    <div class="skill">Photo Editing</div>
+    <div class="skill">Video Editing</div>
+    <div class="skill">Content Creation</div>
+    <div class="skill">Computer Troubleshooting</div>
+    <div class="skill">Web Design</div>
+    <div class="skill">Creative Problem Solving</div>
+    <div class="skill">Multimedia Production</div>
+  </div>
 </section>
 
 <section class="reveal">
-<div class="glass">
-<h2>Education</h2>
-<p><b>Polytechnic University of the Philippines</b><br>2nd Year College (2024–Present)</p><br>
-<p><b>Parañaque National High School – Baclaran Annex</b><br>ABM Strand (2022–2024)</p>
-</div>
+  <div class="glass">
+    <h2>Education</h2>
+    <p><b>Polytechnic University of the Philippines</b><br>2nd Year College (2024–Present)</p><br>
+    <p><b>Parañaque National High School – Baclaran Annex</b><br>ABM Strand (2022–2024)</p>
+  </div>
 </section>
 
 <section class="reveal">
-<div class="glass">
-<h2>Contact & Links</h2>
-<p>📧 rav10l7uchan@gmail.com</p>
-<p>📸 <a href="https://www.instagram.com/canned_ravioli420/?hl=en">Instagram</a></p>
-<p>📘 <a href="https://www.facebook.com/haileesophie.delossantos">Facebook</a></p>
-<p>💻 <a href="https://github.com/Elwiwiwi">GitHub</a></p>
-<p><b>Available for Internships & Collaborations</b></p>
-</div>
+  <div class="glass">
+    <h2>Contact & Links</h2>
+    <p>📧 rav10l7uchan@gmail.com</p>
+    <p>📸 <a href="https://www.instagram.com/canned_ravioli420/?hl=en">Instagram</a></p>
+    <p>📘 <a href="https://www.facebook.com/haileesophie.delossantos">Facebook</a></p>
+    <p>💻 <a href="https://github.com/Elwiwiwi">GitHub</a></p>
+    <p><b>Available for Internships & Collaborations</b></p>
+  </div>
 </section>
 
 <footer>© 2025 PUP-Paranaque</footer>
 
-<script>
-const reveals=document.querySelectorAll('.reveal');
-window.addEventListener('scroll',()=>{
-reveals.forEach(el=>{
-if(el.getBoundingClientRect().top < window.innerHeight-100){
-el.classList.add('active');
-}
-});
-});
-</script>
+</div><!-- end #main-page -->
 
+<script>
+/* ── CREDENTIALS (demo – swap for real auth if needed) ── */
+const VALID_USER = 'hailie';
+const VALID_PASS = 'sophie2025';
+
+function attemptLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+
+  if(u === VALID_USER && p === VALID_PASS){
+    err.textContent = '';
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('main-page').classList.remove('hidden');
+    startClock();
+    triggerReveals();
+  } else {
+    err.textContent = '✗ Incorrect username or password.';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+  }
+}
+
+function logout(){
+  document.getElementById('main-page').classList.add('hidden');
+  document.getElementById('login-page').classList.remove('hidden');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+  window.scrollTo(0,0);
+}
+
+/* allow Enter key on login inputs */
+['login-user','login-pass'].forEach(id=>{
+  document.getElementById(id).addEventListener('keydown', e=>{
+    if(e.key === 'Enter') attemptLogin();
+  });
+});
+
+/* ── LIVE CLOCK ── */
+function startClock(){
+  function tick(){
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const day = days[now.getDay()];
+    document.getElementById('live-clock').textContent = ${day} ${h}:${m}:${s};
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ── SCROLL REVEAL ── */
+function triggerReveals(){
+  const reveals = document.querySelectorAll('.reveal');
+  function check(){
+    reveals.forEach(el=>{
+      if(el.getBoundingClientRect().top < window.innerHeight - 100){
+        el.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', check);
+  check(); // run once on load
+}
+</script>
 </body>
 </html>
