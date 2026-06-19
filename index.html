@@ -320,8 +320,6 @@ transform:none;
 
 <body>
 
-<!-- LOGIN PAGE -->
-
 <div id="login-page">
 
 <div class="login-box">
@@ -346,7 +344,7 @@ Sign in to view portfolio
 
 <div id="login-error"></div>
 
-<button class="btn-login" onclick="attemptLogin()">
+<button type="button" class="btn-login" onclick="attemptLogin()">
 Sign In →
 </button>
 
@@ -358,8 +356,6 @@ Pass: <span>sophie2025</span>
 </div>
 
 </div>
-
-<!-- MAIN PAGE -->
 
 <div id="main-page" class="hidden">
 
@@ -389,7 +385,6 @@ Sign Out
 
 <section class="hero">
 
-<!-- Put profile.jpeg in same folder -->
 <img src="profile.jpeg"
 alt="Hailie Sophie"
 class="pfp">
@@ -570,6 +565,11 @@ document.getElementById("main-page")
 document.getElementById("login-page")
 .classList.remove("hidden");
 
+
+document.getElementById("login-user").value = "";
+document.getElementById("login-pass").value = "";
+document.getElementById("login-error").textContent = "";
+
 window.scrollTo(0,0);
 
 }
@@ -582,6 +582,7 @@ document.getElementById(id)
 .addEventListener("keydown",e=>{
 
 if(e.key==="Enter"){
+e.preventDefault(); 
 attemptLogin();
 }
 
@@ -649,9 +650,10 @@ check();
 
 }
 
-/* AUTO LOGIN */
 
-window.addEventListener("load",()=>{
+
+
+document.addEventListener("DOMContentLoaded", ()=>{
 
 if(localStorage.getItem("loggedIn")==="true"){
 
