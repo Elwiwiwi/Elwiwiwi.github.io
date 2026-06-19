@@ -334,12 +334,12 @@ Sign in to view portfolio
 
 <div class="login-field">
 <label>Username</label>
-<input type="text" id="login-user">
+<input type="text" id="login-user" autocomplete="off">
 </div>
 
 <div class="login-field">
 <label>Password</label>
-<input type="password" id="login-pass">
+<input type="password" id="login-pass" autocomplete="new-password">
 </div>
 
 <div id="login-error"></div>
@@ -517,6 +517,18 @@ const VALID_USER = "hailie";
 const VALID_PASS = "sophie2025";
 
 let clockInterval;
+
+/* STRICT STARTUP LOCKDOWN */
+window.addEventListener("load", () => {
+  // 1. Ensure main page is hidden
+  document.getElementById("main-page").classList.add("hidden");
+  // 2. Ensure login page is visible
+  document.getElementById("login-page").classList.remove("hidden");
+  // 3. Wipe any ghost text the browser tries to leave in the inputs
+  document.getElementById("login-user").value = "";
+  document.getElementById("login-pass").value = "";
+  document.getElementById("login-error").textContent = "";
+});
 
 /* LOGIN */
 
